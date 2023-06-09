@@ -23,6 +23,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"strings"
+	"time"
 )
 
 func Hello(ctx *gin.Context) {
@@ -182,4 +183,10 @@ type Resp2 struct {
 		ExpiresIn   int    `json:"expires_in"`
 		ExpiresAt   int    `json:"expiresAt"`
 	} `json:"data"`
+}
+
+// PingHandler 火山校验
+func PingHandler(w http.ResponseWriter, r *http.Request) {
+	time.Sleep(45 * time.Millisecond)
+	fmt.Fprintf(w, "pong!\n")
 }
