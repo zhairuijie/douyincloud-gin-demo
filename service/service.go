@@ -101,7 +101,7 @@ type Resp struct {
 }
 
 // OpenAPI 直接调用openapi
-func OpenAPI(w http.ResponseWriter, r *http.Request) {
+func OpenAPI(ctx *gin.Context) {
 	url1 := "https://developer.toutiao.com/api/apps/v2/token"
 	method1 := "POST"
 
@@ -168,10 +168,10 @@ func OpenAPI(w http.ResponseWriter, r *http.Request) {
 	//以下为设置返回（勿动）
 	msg, err := json.Marshal(data)
 	if err != nil {
-		fmt.Fprint(w, "内部错误")
+		Failure(ctx, err)
 		return
 	}
-	w.Write(msg)
+	Success(ctx, string(msg))
 }
 
 type Resp2 struct {
