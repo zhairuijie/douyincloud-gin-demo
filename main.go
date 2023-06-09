@@ -16,19 +16,23 @@ limitations under the License.
 package main
 
 import (
-	"douyincloud-gin-demo/component"
 	"douyincloud-gin-demo/service"
-	"github.com/gin-gonic/gin"
+	"log"
 	"net/http"
 )
 
 func main() {
-	component.InitComponents()
+	//component.InitComponents()
+	listenPort := ":8000"
+	if listenPort == "" {
+		log.Fatal("failed to load _FAAS_RUNTIME_PORT")
+	}
 	http.HandleFunc("/api/open", service.OpenAPI) //检查抖开openapi https
-	r := gin.Default()
+	log.Fatal(http.ListenAndServe(listenPort, nil))
 
-	r.GET("/api/hello", service.Hello)
-	r.POST("/api/set_name", service.SetName)
-
-	r.Run(":8000")
+	//r := gin.Default()
+	//r.GET("/api/hello", service.Hello)
+	//r.POST("/api/set_name", service.SetName)
+	//
+	//r.Run(":8000")
 }
