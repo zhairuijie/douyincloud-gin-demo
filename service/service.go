@@ -103,7 +103,7 @@ type Resp struct {
 
 // OpenAPI 直接调用openapi
 func OpenAPI(w http.ResponseWriter, r *http.Request) {
-	url1 := "https://developer.toutiao.com/api/apps/v2/token"
+	url1 := "http://developer.toutiao.com/api/apps/v2/token"
 	method1 := "POST"
 
 	payload1 := strings.NewReader(`{"secret":"56ac324f4b081369b1975d254e7cf832650afb50",
