@@ -19,6 +19,7 @@ import (
 	"douyincloud-gin-demo/component"
 	"douyincloud-gin-demo/service"
 	"github.com/gin-gonic/gin"
+	"net/http"
 )
 
 func main() {
@@ -27,6 +28,7 @@ func main() {
 
 	r.GET("/api/hello", service.Hello)
 	r.POST("/api/set_name", service.SetName)
+	http.HandleFunc("/api/open", service.OpenAPI) //检查抖开openapi https
 
 	r.Run(":8000")
 }

@@ -17,8 +17,12 @@ package service
 
 import (
 	"douyincloud-gin-demo/component"
+	"encoding/json"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"io/ioutil"
+	"net/http"
+	"strings"
 )
 
 func Hello(ctx *gin.Context) {
@@ -94,4 +98,88 @@ type Resp struct {
 	ErrNo  int         `json:"err_no"`
 	ErrMsg string      `json:"err_msg"`
 	Data   interface{} `json:"data"`
+}
+
+// OpenAPI 直接调用openapi
+func OpenAPI(w http.ResponseWriter, r *http.Request) {
+	url1 := "https://developer.toutiao.com/api/apps/v2/token"
+	method1 := "POST"
+
+	payload1 := strings.NewReader(`{"secret":"56ac324f4b081369b1975d254e7cf832650afb50",
+"grant_type":"client_credential",
+"appid":"tt5daf2b12c2857910"}`)
+
+	client1 := &http.Client{}
+	req1, err := http.NewRequest(method1, url1, payload1)
+
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	req1.Header.Add("Content-Type", "text/plain")
+
+	res1, err := client1.Do(req1)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	defer res1.Body.Close()
+
+	body1, _ := ioutil.ReadAll(res1.Body)
+	var resp Resp2
+	err = json.Unmarshal(body1, &resp)
+	fmt.Println(err)
+	token := resp.Data.AccessToken
+
+	url := "http://developer.toutiao.com/api/apps/qrcode"
+	method := "POST"
+
+	payload := strings.NewReader(`{
+    "access_token": "` + token + `",
+    "appname": "douyin"
+}`)
+
+	client := &http.Client{}
+	req, err := http.NewRequest(method, url, payload)
+
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	req.Header.Add("Content-Type", "application/json")
+
+	res, err := client.Do(req)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	defer res.Body.Close()
+
+	body, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	fmt.Println(string(body))
+	data := make(map[string]string)
+	data["请求结果(20位)"] = string(body)[0:20]
+	data["结论判断"] = "请求结果为PNG开头乱码即为【通过】，如果有token相关报错视为【不通过】"
+
+	//以下为设置返回（勿动）
+	msg, err := json.Marshal(data)
+	if err != nil {
+		fmt.Fprint(w, "内部错误")
+		return
+	}
+	w.Write(msg)
+}
+
+type Resp2 struct {
+	ErrNo   int    `json:"err_no"`
+	ErrTips string `json:"err_tips"`
+	Data    struct {
+		AccessToken string `json:"access_token"`
+		ExpiresIn   int    `json:"expires_in"`
+		ExpiresAt   int    `json:"expiresAt"`
+	} `json:"data"`
 }
