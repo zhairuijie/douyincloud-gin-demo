@@ -29,7 +29,7 @@ func main() {
 	}
 	http.HandleFunc("/v1/ping", service.PingHandler) //火山校验
 	http.HandleFunc("/api/open", service.OpenAPI)    //检查抖开openapi https
-	http.HandleFunc("/api/ark", service.Ark)         //aibot调用豆包
+	http.HandleFunc("/api/ark", service.Ark)    //aibot调用豆包
 	log.Fatal(http.ListenAndServe(listenPort, nil))
 
 	//r := gin.Default()
