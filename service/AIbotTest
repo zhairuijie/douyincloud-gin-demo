@@ -1,3 +1,17 @@
+package service
+
+import (
+	"douyincloud-gin-demo/component"
+	"encoding/json"
+	"fmt"
+	"github.com/gin-gonic/gin"
+	"io/ioutil"
+	"net/http"
+	"strings"
+	"time"
+)
+
+
 func Ark(ctx *gin.Context) {
     chat, ex := ctx.GetQuery("chat")
     if !ex {
