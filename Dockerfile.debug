@@ -1,0 +1,21 @@
+# 基础镜像为amd64镜像,windows上可能无法识别arm64镜像里面的dlv
+FROM douyin-cloud-cn-beijing.cr.volces.com/cloud-public/golang:amd64 as builder
+WORKDIR /app
+RUN go env -w GOCACHE=/go-cache && go env -w GOMODCACHE=/gomod-cache
+# 先下载依赖
+COPY go.mod go.sum ./
+RUN --mount=type=cache,target="/gomod-cache" go mod download
+# 构建 Go 应用,复用golang的编译缓存,目录参考go env中的GOCACHE
+COPY .. .
+RUN --mount=type=cache,target="/gomod-cache" --mount=type=cache,target=/go-cache go build -p=8 '-gcflags=all=-N -l' -o main .
+# 第二阶段：运行阶段
+FROM douyin-cloud-cn-beijing.cr.volces.com/cloud-public/alpine:latest
+# 设置工作目录
+WORKDIR /app
+# 预设默认的调试端口为5005
+ENV DEBUG_PORT=5005
+# 从构建阶段复制编译好的二进制文件和 Delve 工具
+COPY --from=builder /go/bin/dlv /usr/local/bin/dlv
+COPY --from=builder /app/main /app/main
+# 启动 Delve 调试,调试端口在5005
+CMD dlv --listen=:$DEBUG_PORT --headless=true --api-version=2 --accept-multiclient exec /app/main

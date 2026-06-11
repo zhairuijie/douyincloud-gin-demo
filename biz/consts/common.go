@@ -1,0 +1,5 @@
+package consts
+
+const (
+	XiaoheCard = "{\"type\":\"microapp_card\",\"title\":\"牛诤医生\",\"subtitle\":\"副主任医师·妇产科·杭州市第一人民医院\",\"title_v2\":\"牛诤医生\",\"subtitle_v2\":\"副主任医师·妇产科·杭州市第一人民医院\",\"icon\":\"https://p3-nethosp-public.byteimg.com/tos-cn-i-uryja4snw9/2dd2ee09cf7c406399526cad2877c4e7~tplv-uryja4snw9-compress.jpeg\",\"router\":\"sslocal://microapp?app_id=tta38cd5313ca659de&bdp_log=%7B%22enter_from_merge%22%3A%22format%22%2C%22enter_position%22%3A%22doctor_card%22%2C%22entrance_form%22%3A%22format_card%22%2C%22launch_from%22%3A%22format%22%2C%22location%22%3A%22doctor_card%22%2C%22scene%22%3A%22026029%22%7D&enter_from_merge=format&enter_position=doctor_card&entrance_form=format_card&scene=026029&start_page=taro%2Fpages%2Flotus%2Fdoctor%2Flynx%2Findex%3Fuser_id%3D160121811304799%26page_from%3Dformat%26author_id%3D3016653365584571%26format_to_inquiry%3D2&version=v2&version_type=current&bdpsum=a2954d3\",\"log_params\":\"{\\\"mp_id\\\":\\\"tta38cd5313ca659de\\\",\\\"mp_name\\\":\\\"小荷健康\\\"}\",\"tags\":[{\"text\":\"三甲\",\"text_color\":\"#99161823\",\"bg_color\":\"#0D161823\"}]}"
+)

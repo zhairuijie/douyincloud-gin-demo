@@ -1,70 +1,23 @@
-# douyincloud-gin-demo
-本项目是抖音云平台基于go语言gin框架的开发模版，模版通过使用Redis和MongoDB实现了简单的hello-world功能。\
-抖音云平台支持基于Git代码和Docker镜像部署两种方式。其中，Dockerfile文件可以参考本项目中的Dockerfile文件。
-部署在抖音云平台的服务日志需要重定向到标准输出，并在抖音云平台日志功能中查看。
+本demo使用开源hertz生成，仅做参考, 创作者可根据文档实现相关接口即可
 
-## 目录结构
-~~~
-.
-├── Dockerfile              Dockerfile文件
-├── Readme.md               Readme文件
-├── component               组件目录
-│ ├── mongo.go              mongo组件
-│ ├── redis.go              redis组件        
-│ └── types.go              组件接口声明
-├── go.mod                  go.mod文件
-├── go.sum                  go.sum文件
-├── main.go                 主函数入口
-├── run.sh                  容器运行时启动文件
-└── service                 业务逻辑目录
-    └── service.go          业务逻辑文件
-~~~
-
-## 请求方法
-前往抖音云托管平台「调试」功能界面，进行请求调试。
-
-## API说明
-### `GET /api/hello`
-对组件打招呼
-
-### 请求参数
-- `target`：`string` 组件名：redis，mongodb
-
-### 响应结果
-```json
-{
-    "err_no": 0,
-    "err_msg": "success",
-    "data": "hello,redis"
-}
-```
-
-### `POST /api/set_name`
-给组件设置名称
-
-### 请求参数
-- `target`:`string` 组件名：redis，mongodb
-- `name`:`string` 名称
-
-### 响应结果
-```json
-{
-    "err_no": 0,
-    "err_msg": "success",
-    "data": ""
-}
-```
-
-### 组件使用注意事项
-在抖音云托管平台上启用组件后，抖音云平台会自动将组件的地址，账号，密码以环境变量的方式注入到容器中。\
-以Redis为例，在抖音云托管平台启用Redis组件后，平台会生成 `REDIS_ADDRESS`，`REDIS_USERNAME`，`REDIS_PASSWORD`三个环境变量，在业务代码中可以使用如下代码获取相应值。
-```
-	redisAddr := os.Getenv("REDIS_ADDRESS")
-	redisUserName := os.Getenv("REDIS_USERNAME")
-	redisPassword := os.Getenv("REDIS_PASSWORD")
-```
-
-## License
-
-This project is licensed under the [Apache-2.0 License](LICENSE).
-
+### serv_template_open目录说明
+- biz // business 层，存放业务逻辑相关流程
+    - component     // avatar原子，未来会提供通用原子实现，本期是简单demo
+    - implements    // 用户实现入口
+        - chat_stream.go    // 流式会话接口ChatStream实现入口
+        - on_boarding.go    // 开场白流式接口OnBoarding实现入口
+        - chat.go           // 非流式对话接口，通常在离线场景使用
+    - convertor             // 结构体转换
+    - dal                   // 远程访问
+    - model                 // 结构体定义
+    - router                // hertz 自动生成文件，接口路由/中间件
+    - util                  // 工具包
+        - resp_writer.go    // 简单封装http chunk返回的工具包
+    - init.go               // 业务全局初始化
+- script
+    - bootstrap.sh // 本期启动脚本
+- build.sh         // 本地编译脚本
+- go.mod           // 包管理，创作者可以自定义module
+- main.go               // 服务启动入口
+- Dockerfile            // 抖音云部署需要；
+- run.sh                // 抖音云部署需要
