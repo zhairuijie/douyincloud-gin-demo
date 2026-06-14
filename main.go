@@ -4,6 +4,8 @@ package main
 
 import (
 	"douyin/avatar/serv_template_open/biz"
+	"douyin/avatar/serv_template_open/service"
+	"log"
 
 	"github.com/cloudwego/hertz/pkg/app/server"
 )
@@ -15,6 +17,15 @@ func main() {
 	// 抖音云需要8000端口
 	h := server.Default(server.WithStreamBody(true), server.WithHostPorts(":8000"))
 
+	router := gin.Default() // 初始化 Gin 路由
+
+	// 添加路由，将请求映射到 service.Ark 方法
+	router.GET("/ark", service.Ark) // 或根据需求使用 POST 方法
+
+	// 启动服务器
+	if err := router.Run(":8080"); err != nil { // 端口可自定义
+		log.Fatal("服务器启动失败:", err)
+	}
 	register(h)
 	h.Spin()
 }
