@@ -24,8 +24,8 @@ import (
 // 小程序通过 cloud.callContainer 请求云托管服务时，抖音云会在 HTTP header 中注入用户身份信息，
 // 服务端无需 code2session 即可直接获取，匿名登录仅能拿到 X-TT-ANONYMOUS-OPENID。
 func LoginHandler(w http.ResponseWriter, r *http.Request) {
-	openID := r.Header.Get("X-TT-Token")
-	if openID == "" {
+	openID := r.Header.Get("X-TT-OPENID")
+	if openID == "" || len(openID) == 0 {
 		w.WriteHeader(http.StatusOK)
 		_ = json.NewEncoder(w).Encode(map[string]interface{}{
 			"err_no":  -1,
