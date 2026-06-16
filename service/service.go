@@ -16,14 +16,15 @@ limitations under the License.
 package service
 
 import (
-	"douyincloud-gin-demo/component"
+	"douyin/avatar/serv_template_open/component"
 	"encoding/json"
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"io/ioutil"
 	"net/http"
 	"strings"
 	"time"
+
+	"github.com/gin-gonic/gin"
 )
 
 func Hello(ctx *gin.Context) {
@@ -190,4 +191,3 @@ func PingHandler(w http.ResponseWriter, r *http.Request) {
 	time.Sleep(45 * time.Millisecond)
 	fmt.Fprintf(w, "pong!\n")
 }
-

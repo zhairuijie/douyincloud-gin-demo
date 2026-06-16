@@ -1,12 +1,12 @@
 # 基础镜像为amd64镜像,windows上可能无法识别arm64镜像里面的dlv
 FROM douyin-cloud-cn-beijing.cr.volces.com/cloud-public/golang:amd64 as builder
 WORKDIR /app
-RUN go env -w GOCACHE=/go-cache && go env -w GOMODCACHE=/gomod-cache
+RUN go env -w GOCACHE=/go-cache && go env -w GOMODCACHE=/gomod-cache && go env -w GOPROXY=https://goproxy.cn,direct
 # 先下载依赖
 COPY go.mod go.sum ./
 RUN --mount=type=cache,target="/gomod-cache" go mod download
 # 构建 Go 应用,复用golang的编译缓存,目录参考go env中的GOCACHE
-COPY .. .
+COPY . .
 RUN --mount=type=cache,target="/gomod-cache" --mount=type=cache,target=/go-cache go build -p=8 '-gcflags=all=-N -l' -o main .
 # 第二阶段：运行阶段
 FROM douyin-cloud-cn-beijing.cr.volces.com/cloud-public/alpine:latest
