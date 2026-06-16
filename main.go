@@ -8,6 +8,7 @@ import (
 	"log"
 
 	"github.com/cloudwego/hertz/pkg/app/server"
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
@@ -21,6 +22,9 @@ func main() {
 
 	// 添加路由，将请求映射到 service.Ark 方法
 	router.GET("/ark", service.Ark) // 或根据需求使用 POST 方法
+
+	// 测试抖音云免登录调用，从 HTTP header 中读取用户身份信息
+	router.GET("/login", service.Login)
 
 	// 启动服务器
 	if err := router.Run(":8080"); err != nil { // 端口可自定义
