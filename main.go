@@ -27,9 +27,10 @@ func main() {
 	if listenPort == "" {
 		log.Fatal("failed to load _FAAS_RUNTIME_PORT")
 	}
-	http.HandleFunc("/v1/ping", service.PingHandler)    //火山校验
-	http.HandleFunc("/api/open", service.OpenAPI)       //检查抖开openapi https
-	http.HandleFunc("/api/login", service.LoginHandler) //测试抖音云免登录调用
+	http.HandleFunc("/v1/ping", service.PingHandler)      //火山校验
+	http.HandleFunc("/api/open", service.OpenAPI)         //检查抖开openapi https
+	http.HandleFunc("/api/login", service.LoginHandler)   //测试抖音云免登录调用
+	http.HandleFunc("/api/ark", service.ArkStreamHandler) //流式调用大模型
 	log.Fatal(http.ListenAndServe(listenPort, nil))
 
 	//r := gin.Default()
